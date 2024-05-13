@@ -5,6 +5,7 @@ import { SubscriptionPlanRoutes } from '../modules/subscriptions-plan/subscripti
 import { MessageRoutes } from '../modules/messages/message.routes';
 import { SubscriptionRoutes } from '../modules/subscriptions/subscriptions.routes';
 import { AuthRoutes } from '../modules/auth/auth.routes';
+import { NotificationRoutes } from '../modules/notifications/notifications.routes';
 
 const router = express.Router();
 
@@ -32,6 +33,10 @@ const moduleRoutes = [
   {
     path: '/message',
     route: MessageRoutes,
+  },
+  {
+    path: '/notification',
+    route: NotificationRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

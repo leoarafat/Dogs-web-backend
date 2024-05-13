@@ -92,10 +92,49 @@ const updatePost = async (id: string, req: Request) => {
   );
   return result;
 };
+//! Controller function to add a comment to a blog post
+async function addComment(req: Request) {
+  const { postId, content } = req.body;
+
+  const { userId } = req.user as IReqUser;
+
+  const post = await Post.findById(postId);
+
+  if (!post) {
+    throw new ApiError(404, 'Post not found');
+  }
+
+  //@ts-ignore
+  post.comments.push({ user: userId, content });
+  await post.save();
+  return post;
+}
+//! Controller function to delete a comment from a blog post
+async function deleteComment(req: Request) {
+  const { postId, commentId } = req.params;
+  const posts = await Post.findById(postId);
+  if (!posts) {
+    throw new ApiError(404, 'Blog post not found');
+  }
+  // Find the index of the comment in the comments array
+  const commentIndex = posts.comments.findIndex(
+    //@ts-ignore
+    comment => comment._id.toString() === commentId,
+  );
+  if (commentIndex === -1) {
+    throw new ApiError(404, 'Comment not found');
+  }
+  // Remove the comment from the array
+  posts.comments.splice(commentIndex, 1);
+  await posts.save();
+  return posts;
+}
 export const PostService = {
   createPost,
   getMyPosts,
   singlePost,
   deletePost,
   updatePost,
+  addComment,
+  deleteComment,
 };

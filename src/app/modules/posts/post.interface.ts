@@ -6,4 +6,5 @@ export type IPost = {
   title: string;
   description: string;
   image: string;
+  comments: [];
 };

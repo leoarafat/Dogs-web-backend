@@ -12,6 +12,11 @@ router.post(
   uploadFile(),
   PostController.createPost,
 );
+router.post(
+  '/add-comment',
+  auth(ENUM_USER_ROLE.USER),
+  PostController.addComment,
+);
 router.get('/my-posts', auth(ENUM_USER_ROLE.USER), PostController.getMyPosts);
 router.get(
   '/single-post/:id',
@@ -22,6 +27,11 @@ router.delete(
   '/delete-post/:id',
   auth(ENUM_USER_ROLE.USER),
   PostController.deletePost,
+);
+router.delete(
+  '/delete-comment/:id',
+  auth(ENUM_USER_ROLE.USER),
+  PostController.deleteComment,
 );
 router.patch(
   '/edit-post/:id',

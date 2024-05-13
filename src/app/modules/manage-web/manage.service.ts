@@ -2,11 +2,12 @@ import ApiError from '../../../errors/ApiError';
 import {
   AboutUs,
   ContactUs,
+  FAQ,
   PrivacyPolicy,
   TermsConditions,
 } from './manage.model';
 
-//!
+//! Privacy and policy
 const addPrivacyPolicy = async (payload: any) => {
   return await PrivacyPolicy.create(payload);
 };
@@ -34,7 +35,7 @@ const deletePrivacyPolicy = async (id: string) => {
   }
   return await PrivacyPolicy.findByIdAndDelete(id);
 };
-//!
+//! About us
 const addAboutUs = async (payload: any) => {
   return await AboutUs.create(payload);
 };
@@ -59,7 +60,7 @@ const deleteAboutUs = async (id: string) => {
   }
   return await AboutUs.findByIdAndDelete(id);
 };
-//!
+//! Terms Conditions
 const addTermsConditions = async (payload: any) => {
   return await TermsConditions.create(payload);
 };
@@ -88,7 +89,7 @@ const deleteTermsConditions = async (id: string) => {
   return await TermsConditions.findByIdAndDelete(id);
 };
 
-//!
+//! Contact Us
 const addContactUs = async (payload: any) => {
   return await ContactUs.create(payload);
 };
@@ -113,7 +114,34 @@ const deleteContactUs = async (id: string) => {
   }
   return await ContactUs.findByIdAndDelete(id);
 };
-//!
+//! FAQ
+const addFAQ = async (payload: any) => {
+  return await FAQ.create(payload);
+};
+const getFAQ = async () => {
+  return await FAQ.find({});
+};
+const editFAQ = async (
+  id: string,
+  payload: { question: string; answer: string },
+) => {
+  const isExist = await FAQ.findById(id);
+  if (!isExist) {
+    throw new ApiError(404, 'Faq not found');
+  }
+  const result = await FAQ.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+const deleteFAQ = async (id: string) => {
+  const isExist = await FAQ.findById(id);
+  if (!isExist) {
+    throw new ApiError(404, 'Faq not found');
+  }
+  return await FAQ.findByIdAndDelete(id);
+};
 
 export const ManageService = {
   addPrivacyPolicy,
@@ -132,4 +160,8 @@ export const ManageService = {
   deleteContactUs,
   deletePrivacyPolicy,
   deleteTermsConditions,
+  addFAQ,
+  getFAQ,
+  editFAQ,
+  deleteFAQ,
 };

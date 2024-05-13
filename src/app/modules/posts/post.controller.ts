@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchasync';
 import { PostService } from './post.service';
 import sendResponse from '../../../shared/sendResponse';
+import { IReqUser } from '../user/user.interface';
 
 const createPost = catchAsync(async (req: Request, res: Response) => {
   const result = await PostService.createPost(req);
@@ -13,7 +14,7 @@ const createPost = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getMyPosts = catchAsync(async (req: Request, res: Response) => {
-  const result = await PostService.getMyPosts(req.user, req.query);
+  const result = await PostService.getMyPosts(req.user as IReqUser, req.query);
 
   sendResponse(res, {
     statusCode: 200,
@@ -49,6 +50,24 @@ const updatePost = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const addComment = catchAsync(async (req: Request, res: Response) => {
+  const result = await PostService.addComment(req);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Comment add successfully',
+    data: result,
+  });
+});
+const deleteComment = catchAsync(async (req: Request, res: Response) => {
+  const result = await PostService.deleteComment(req);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Post delete successfully',
+    data: result,
+  });
+});
 
 export const PostController = {
   createPost,
@@ -56,4 +75,6 @@ export const PostController = {
   singlePost,
   deletePost,
   updatePost,
+  addComment,
+  deleteComment,
 };

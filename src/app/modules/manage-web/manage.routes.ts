@@ -9,6 +9,7 @@ router.post(
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.addAboutUs,
 );
+router.post('/add-faq', auth(ENUM_USER_ROLE.ADMIN), ManageController.addFAQ);
 router.post(
   '/add-terms-conditions',
   auth(ENUM_USER_ROLE.ADMIN),
@@ -29,6 +30,7 @@ router.get(
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.getPrivacyPolicy,
 );
+router.get('/get-faq', auth(ENUM_USER_ROLE.ADMIN), ManageController.getFAQ);
 router.get(
   '/get-about-us',
   auth(ENUM_USER_ROLE.ADMIN),
@@ -50,6 +52,11 @@ router.patch(
   ManageController.editPrivacyPolicy,
 );
 router.patch(
+  '/edit-faq/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ManageController.editFAQ,
+);
+router.patch(
   '/edit-about-us/:id',
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.editAboutUs,
@@ -68,6 +75,11 @@ router.delete(
   '/delete-about-us/:id',
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.deleteAboutUs,
+);
+router.delete(
+  '/delete-faq/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ManageController.deleteFAQ,
 );
 router.delete(
   '/delete-contact-us/:id',

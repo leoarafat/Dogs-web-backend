@@ -39,6 +39,15 @@ const addContactUs = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const addFAQ = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.addFAQ(req.body);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
 const getPrivacyPolicy = catchAsync(async (req: Request, res: Response) => {
   const result = await ManageService.getPrivacyPolicy();
   sendResponse(res, {
@@ -68,6 +77,15 @@ const getTermsConditions = catchAsync(async (req: Request, res: Response) => {
 });
 const getContactUs = catchAsync(async (req: Request, res: Response) => {
   const result = await ManageService.getContactUs();
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
+const getFAQ = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.getFAQ();
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -114,6 +132,15 @@ const editContactUs = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const editFAQ = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.editFAQ(req.params.id, req.body);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
 const deleteAboutUs = catchAsync(async (req: Request, res: Response) => {
   const result = await ManageService.deleteAboutUs(req.params.id);
   sendResponse(res, {
@@ -134,6 +161,15 @@ const deleteContactUs = catchAsync(async (req: Request, res: Response) => {
 });
 const deletePrivacyPolicy = catchAsync(async (req: Request, res: Response) => {
   const result = await ManageService.deletePrivacyPolicy(req.params.id);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
+const deleteFAQ = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.deleteFAQ(req.params.id);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -170,4 +206,8 @@ export const ManageController = {
   deleteContactUs,
   deletePrivacyPolicy,
   deleteTermsConditions,
+  addFAQ,
+  getFAQ,
+  deleteFAQ,
+  editFAQ,
 };

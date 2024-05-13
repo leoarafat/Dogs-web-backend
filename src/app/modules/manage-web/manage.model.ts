@@ -1,5 +1,6 @@
 import mongoose, { model } from 'mongoose';
 
+//! Privacy and policy
 const privacySchema = new mongoose.Schema(
   {
     description: {
@@ -14,6 +15,7 @@ const privacySchema = new mongoose.Schema(
     },
   },
 );
+//! About US
 const aboutUsSchema = new mongoose.Schema(
   {
     description: {
@@ -28,6 +30,7 @@ const aboutUsSchema = new mongoose.Schema(
     },
   },
 );
+//! Terms Conditions
 const termsAndConditionsSchema = new mongoose.Schema(
   {
     description: {
@@ -42,6 +45,7 @@ const termsAndConditionsSchema = new mongoose.Schema(
     },
   },
 );
+//!Contact US
 const contactUsSchema = new mongoose.Schema(
   {
     email: {
@@ -60,6 +64,25 @@ const contactUsSchema = new mongoose.Schema(
     },
   },
 );
+//!FAQ
+const faqSchema = new mongoose.Schema(
+  {
+    question: {
+      type: String,
+      required: true,
+    },
+    answer: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
 export const PrivacyPolicy = model('PrivacyPolicy', privacySchema);
 export const AboutUs = model('AboutUs', aboutUsSchema);
 export const TermsConditions = model(
@@ -67,3 +90,4 @@ export const TermsConditions = model(
   termsAndConditionsSchema,
 );
 export const ContactUs = model('ContactUs', contactUsSchema);
+export const FAQ = model('FAQ', faqSchema);

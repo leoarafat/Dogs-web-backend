@@ -27,6 +27,7 @@ const postSchema = new Schema<IPost>(
       required: true,
       trim: true,
     },
+    comments: [],
   },
   {
     timestamps: true,
