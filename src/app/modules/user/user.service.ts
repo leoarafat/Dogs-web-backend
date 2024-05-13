@@ -168,58 +168,45 @@ const updateProfile = async (
   if (!checkValidUser) {
     throw new ApiError(404, 'You are not authorized');
   }
-  // console.log(req.body, 'Body Data');
+  let cover_image = undefined;
   //@ts-ignore
-  if (files?.profile_image?.length) {
-    const result = await User.findOneAndUpdate(
-      { _id: id },
-      //@ts-ignore
-      { profile_image: files.profile_image[0].path },
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
-
-    return result;
-  }
-  //@ts-ignore
-  else if (files?.cover_image?.length) {
-    const result = await User.findOneAndUpdate(
-      { _id: id },
-      //@ts-ignore
-      { cover_image: files.cover_image[0].path },
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
-
-    return result;
-  } else {
+  if (files && files.cover_image) {
     //@ts-ignore
-    const data = req.body;
-    if (!data) {
-      throw new Error('Data is missing in the request body!');
-    }
-
-    // const parsedData = JSON.parse(data);
-
-    const isExist = await User.findOne({ _id: id });
-
-    if (!isExist) {
-      throw new ApiError(404, 'User not found !');
-    }
-
-    const { ...UserData } = data;
-
-    const updatedUserData: Partial<IUser> = { ...UserData };
-
-    const result = await User.findOneAndUpdate({ _id: id }, updatedUserData, {
-      new: true,
-    });
-    return result;
+    cover_image = files.cover_image[0].path;
   }
+  let profile_image = undefined;
+  //@ts-ignore
+  if (files && files.profile_image) {
+    //@ts-ignore
+    profile_image = files.profile_image[0].path;
+  }
+
+  //@ts-ignore
+  const data = req.body;
+  if (!data) {
+    throw new Error('Data is missing in the request body!');
+  }
+
+  // const parsedData = JSON.parse(data);
+
+  const isExist = await User.findOne({ _id: id });
+
+  if (!isExist) {
+    throw new ApiError(404, 'User not found !');
+  }
+
+  const { ...UserData } = data;
+
+  const updatedUserData: Partial<IUser> = { ...UserData };
+
+  const result = await User.findOneAndUpdate(
+    { _id: id },
+    { profile_image, cover_image, ...updatedUserData },
+    {
+      new: true,
+    },
+  );
+  return result;
 };
 //!
 const deleteUser = async (id: string): Promise<IUser | null> => {
