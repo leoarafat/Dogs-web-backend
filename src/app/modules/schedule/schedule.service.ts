@@ -25,10 +25,21 @@ const deleteSchedule = async (id: string) => {
   }
   return await Schedule.findByIdAndDelete(id);
 };
+const updateSchedule = async (id: string, payload: Partial<ISchedule>) => {
+  const isExist = await Schedule.findById(id);
+  if (!isExist) {
+    throw new ApiError(404, 'Schedule not found');
+  }
+  return await Schedule.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+};
 
 export const ScheduleService = {
   insertIntoDB,
   allSchedule,
   mySchedule,
   deleteSchedule,
+  updateSchedule,
 };

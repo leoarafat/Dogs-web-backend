@@ -1,6 +1,24 @@
 import { Schema, model } from 'mongoose';
 import { IPost } from './post.interface';
-
+const commentSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
 const postSchema = new Schema<IPost>(
   {
     user: {
@@ -27,7 +45,7 @@ const postSchema = new Schema<IPost>(
       required: true,
       trim: true,
     },
-    comments: [],
+    comments: [commentSchema],
   },
   {
     timestamps: true,

@@ -16,5 +16,15 @@ router.get(
   auth(ENUM_USER_ROLE.USER),
   ScheduleController.mySchedule,
 );
+router.delete(
+  '/delete/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ScheduleController.deleteSchedule,
+);
+router.patch(
+  '/update/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ScheduleController.updateSchedule,
+);
 
 export const ScheduleRoutes = router;

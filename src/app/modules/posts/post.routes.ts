@@ -29,7 +29,7 @@ router.delete(
   PostController.deletePost,
 );
 router.delete(
-  '/delete-comment/:id',
+  '/delete-comment/:postId/:commentId',
   auth(ENUM_USER_ROLE.USER),
   PostController.deleteComment,
 );

@@ -41,7 +41,7 @@ const subscriptionSchema = new Schema<ISubscription>(
       type: String,
       required: true,
       enum: ['active', 'inactive'],
-      default: 'inactive',
+      default: 'active',
     },
     trasactionId: { type: String, required: false },
   },

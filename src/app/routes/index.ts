@@ -8,6 +8,8 @@ import { AuthRoutes } from '../modules/auth/auth.routes';
 import { NotificationRoutes } from '../modules/notifications/notifications.routes';
 import { TrainingRoutes } from '../modules/training-programs/training-programs.routes';
 import { ScheduleRoutes } from '../modules/schedule/schedule.routes';
+import { DashboardOverviewRoutes } from '../modules/dashboard/overview/overview.routes';
+import { PromoRoutes } from '../modules/promo/promo.routes';
 
 const router = express.Router();
 
@@ -29,6 +31,10 @@ const moduleRoutes = [
     route: SubscriptionRoutes,
   },
   {
+    path: '/promo',
+    route: PromoRoutes,
+  },
+  {
     path: '/auth',
     route: AuthRoutes,
   },
@@ -47,6 +53,10 @@ const moduleRoutes = [
   {
     path: '/schedule',
     route: ScheduleRoutes,
+  },
+  {
+    path: '/overview',
+    route: DashboardOverviewRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

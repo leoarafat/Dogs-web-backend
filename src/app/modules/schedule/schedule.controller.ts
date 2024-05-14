@@ -33,5 +33,31 @@ const mySchedule = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const deleteSchedule = catchAsync(async (req: Request, res: Response) => {
+  const result = await ScheduleService.deleteSchedule(req.params.id);
 
-export const ScheduleController = { insertIntoDB, mySchedule, allSchedule };
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Schedule delete successful',
+    data: result,
+  });
+});
+const updateSchedule = catchAsync(async (req: Request, res: Response) => {
+  const result = await ScheduleService.updateSchedule(req.params.id, req.body);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Schedule retrieved successful',
+    data: result,
+  });
+});
+
+export const ScheduleController = {
+  insertIntoDB,
+  mySchedule,
+  allSchedule,
+  deleteSchedule,
+  updateSchedule,
+};
