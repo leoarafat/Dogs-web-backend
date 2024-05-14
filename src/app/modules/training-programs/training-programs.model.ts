@@ -7,15 +7,7 @@ const trainingSchema = new Schema<ITraining>(
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
     image: {
-      type: String,
-      required: true,
-    },
-    video: {
       type: String,
       required: true,
     },
@@ -28,4 +20,4 @@ const trainingSchema = new Schema<ITraining>(
   },
 );
 
-export const Training = model('Training', trainingSchema);
+export const Training = model('TrainingProgram', trainingSchema);

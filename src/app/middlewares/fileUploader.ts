@@ -30,6 +30,8 @@ export const uploadFile = () => {
       'profile_image',
       'cover_image',
       'video',
+      'thumbnail',
+      'video_thumbnail',
     ];
 
     if (file.fieldname === undefined) {
@@ -59,6 +61,8 @@ export const uploadFile = () => {
     { name: 'cover_image', maxCount: 1 },
     { name: 'profile_image', maxCount: 1 },
     { name: 'video', maxCount: 1 },
+    { name: 'video_thumbnail', maxCount: 1 },
+    { name: 'thumbnail', maxCount: 1 },
   ]);
 
   return upload;

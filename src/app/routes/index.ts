@@ -10,6 +10,7 @@ import { TrainingRoutes } from '../modules/training-programs/training-programs.r
 import { ScheduleRoutes } from '../modules/schedule/schedule.routes';
 import { DashboardOverviewRoutes } from '../modules/dashboard/overview/overview.routes';
 import { PromoRoutes } from '../modules/promo/promo.routes';
+import { ProgramArticleRoutes } from '../modules/program-article/program-article.routes';
 
 const router = express.Router();
 
@@ -49,6 +50,10 @@ const moduleRoutes = [
   {
     path: '/training',
     route: TrainingRoutes,
+  },
+  {
+    path: '/program-article',
+    route: ProgramArticleRoutes,
   },
   {
     path: '/schedule',

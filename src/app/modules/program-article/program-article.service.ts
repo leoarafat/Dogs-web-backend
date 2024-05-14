@@ -1,28 +1,41 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Request } from 'express';
-import { Training } from './training-programs.model';
 import QueryBuilder from '../../../builder/QueryBuilder';
 import ApiError from '../../../errors/ApiError';
+import { ProgramArticle } from './program-article.model';
 
 const insertIntoDB = async (req: Request) => {
   const { files, body } = req;
 
-  let image = undefined;
+  let thumbnail = undefined;
   //@ts-ignore
-  if (files && files.image) {
+  if (files && files.thumbnail) {
     //@ts-ignore
-    image = files.image[0].path;
+    thumbnail = files.thumbnail[0].path;
   }
-
-  const result = await Training.create({
-    image,
+  let video_thumbnail = undefined;
+  //@ts-ignore
+  if (files && files.video_thumbnail) {
+    //@ts-ignore
+    video_thumbnail = files.video_thumbnail[0].path;
+  }
+  let video = undefined;
+  //@ts-ignore
+  if (files && files.video) {
+    //@ts-ignore
+    video = files.video[0].path;
+  }
+  const result = await ProgramArticle.create({
+    thumbnail,
+    video_thumbnail,
+    video,
     ...body,
   });
   return result;
 };
 const getTraining = async (query: Record<string, unknown>) => {
-  const trainingQuery = new QueryBuilder(Training.find({}), query)
-    .search(['title', 'description'])
+  const trainingQuery = new QueryBuilder(ProgramArticle.find({}), query)
+    .search(['article_title', 'article_name'])
     .filter()
     .sort()
     .paginate()
@@ -37,7 +50,7 @@ const getTraining = async (query: Record<string, unknown>) => {
   };
 };
 const getSingleTraining = async (id: string) => {
-  const result = await Training.findById(id);
+  const result = await ProgramArticle.findById(id);
   if (!result) {
     throw new ApiError(404, 'Training Programs not found');
   }
@@ -47,21 +60,35 @@ const updateTraining = async (req: Request) => {
   const { files, body } = req;
   const { id } = req.params;
 
-  let image = undefined;
+  let thumbnail = undefined;
   //@ts-ignore
-  if (files && files.image) {
+  if (files && files.thumbnail) {
     //@ts-ignore
-    image = files.image[0].path;
+    thumbnail = files.thumbnail[0].path;
   }
-  const isExist = await Training.findById(id);
+  let video_thumbnail = undefined;
+  //@ts-ignore
+  if (files && files.video_thumbnail) {
+    //@ts-ignore
+    video_thumbnail = files.video_thumbnail[0].path;
+  }
+  let video = undefined;
+  //@ts-ignore
+  if (files && files.video) {
+    //@ts-ignore
+    video = files.video[0].path;
+  }
+  const isExist = await ProgramArticle.findById(id);
   if (!isExist) {
     throw new ApiError(404, 'Training program not found');
   }
   const { ...updateData } = body;
-  const result = await Training.findOneAndUpdate(
+  const result = await ProgramArticle.findOneAndUpdate(
     { _id: id },
     {
-      image,
+      thumbnail,
+      video_thumbnail,
+      video,
       ...updateData,
     },
     {
@@ -73,14 +100,14 @@ const updateTraining = async (req: Request) => {
 };
 const deleteTraining = async (req: Request) => {
   const { id } = req.params;
-  const isExist = await Training.findById(id);
+  const isExist = await ProgramArticle.findById(id);
   if (!isExist) {
     throw new ApiError(404, 'Training program not found');
   }
-  return await Training.findByIdAndDelete(id);
+  return await ProgramArticle.findByIdAndDelete(id);
 };
 
-export const TrainingService = {
+export const ProgramArticleService = {
   insertIntoDB,
   getTraining,
   updateTraining,
