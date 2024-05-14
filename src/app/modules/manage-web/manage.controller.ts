@@ -177,6 +177,16 @@ const deleteFAQ = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const deleteSlider = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.deleteSlider(req.params.id);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
 const deleteTermsConditions = catchAsync(
   async (req: Request, res: Response) => {
     const result = await ManageService.deleteTermsConditions(req.params.id);
@@ -188,8 +198,39 @@ const deleteTermsConditions = catchAsync(
     });
   },
 );
+const addSlider = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.addSlider(req);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Slider Add Successful',
+    data: result,
+  });
+});
+const editSlider = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.editSlider(req);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Update Successful',
+    data: result,
+  });
+});
+const getSlider = catchAsync(async (req: Request, res: Response) => {
+  const result = await ManageService.getSlider();
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successful',
+    data: result,
+  });
+});
 
 export const ManageController = {
+  addSlider,
+  getSlider,
+  deleteSlider,
+  editSlider,
   addPrivacyPolicy,
   addAboutUs,
   addTermsConditions,

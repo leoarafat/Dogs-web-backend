@@ -155,9 +155,7 @@ const login = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const { email, password } = payload;
 
   const isUserExist = await Admin.isAdminExist(email);
-  const admin = await Admin.findOne({ email }).lean();
-  //@ts-ignore
-  const { password: omit, ...othersData } = admin;
+
   if (!isUserExist) {
     throw new ApiError(404, 'Admin does not exist');
   }

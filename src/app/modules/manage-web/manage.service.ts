@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { Request } from 'express';
 import ApiError from '../../../errors/ApiError';
 import {
   AboutUs,
   ContactUs,
   FAQ,
   PrivacyPolicy,
+  Slider,
   TermsConditions,
 } from './manage.model';
 
@@ -142,6 +145,62 @@ const deleteFAQ = async (id: string) => {
   }
   return await FAQ.findByIdAndDelete(id);
 };
+//! Slider
+const addSlider = async (req: Request) => {
+  const { files, body } = req;
+
+  let image = undefined;
+  //@ts-ignore
+  if (files && files.image) {
+    //@ts-ignore
+    image = files.image[0].path;
+  }
+
+  const result = await Slider.create({
+    image,
+    ...body,
+  });
+  return result;
+};
+const getSlider = async () => {
+  return await Slider.find({});
+};
+const editSlider = async (req: Request) => {
+  const { files, body } = req;
+  const { id } = req.params;
+
+  let image = undefined;
+  //@ts-ignore
+  if (files && files.image) {
+    //@ts-ignore
+    image = files.image[0].path;
+  }
+
+  const isExist = await Slider.findById(id);
+  if (!isExist) {
+    throw new ApiError(404, 'Slider program not found');
+  }
+  const { ...updateData } = body;
+  const result = await Slider.findOneAndUpdate(
+    { _id: id },
+    {
+      image,
+      ...updateData,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+  return result;
+};
+const deleteSlider = async (id: string) => {
+  const isExist = await Slider.findById(id);
+  if (!isExist) {
+    throw new ApiError(404, 'Slider not found');
+  }
+  return await Slider.findByIdAndDelete(id);
+};
 
 export const ManageService = {
   addPrivacyPolicy,
@@ -164,4 +223,8 @@ export const ManageService = {
   getFAQ,
   editFAQ,
   deleteFAQ,
+  addSlider,
+  getSlider,
+  deleteSlider,
+  editSlider,
 };

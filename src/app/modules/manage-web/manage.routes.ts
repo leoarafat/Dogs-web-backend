@@ -2,6 +2,7 @@ import express from 'express';
 import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import { ManageController } from './manage.controller';
+import { uploadFile } from '../../middlewares/fileUploader';
 const router = express.Router();
 
 router.post(
@@ -25,10 +26,21 @@ router.post(
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.addPrivacyPolicy,
 );
+router.post(
+  '/add-slider',
+  auth(ENUM_USER_ROLE.ADMIN),
+  uploadFile(),
+  ManageController.addSlider,
+);
 router.get(
   '/get-privacy-policy',
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.getPrivacyPolicy,
+);
+router.get(
+  '/get-slider',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
+  ManageController.getSlider,
 );
 router.get('/get-faq', auth(ENUM_USER_ROLE.ADMIN), ManageController.getFAQ);
 router.get(
@@ -50,6 +62,12 @@ router.patch(
   '/edit-privacy-policy/:id',
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.editPrivacyPolicy,
+);
+router.patch(
+  '/edit-slider/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  uploadFile(),
+  ManageController.editSlider,
 );
 router.patch(
   '/edit-faq/:id',
@@ -75,6 +93,11 @@ router.delete(
   '/delete-about-us/:id',
   auth(ENUM_USER_ROLE.ADMIN),
   ManageController.deleteAboutUs,
+);
+router.delete(
+  '/delete-slider/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  ManageController.deleteSlider,
 );
 router.delete(
   '/delete-faq/:id',

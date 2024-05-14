@@ -87,7 +87,10 @@ const UserSchema = new Schema<IUser, UserModel>(
     },
     date_of_birth: {
       type: Date,
-      // required: true,
+    },
+    is_block: {
+      type: Boolean,
+      default: false,
     },
     plan_type: {
       type: String,

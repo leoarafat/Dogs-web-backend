@@ -83,6 +83,25 @@ const faqSchema = new mongoose.Schema(
     },
   },
 );
+//!Slider
+const sliderSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
 export const PrivacyPolicy = model('PrivacyPolicy', privacySchema);
 export const AboutUs = model('AboutUs', aboutUsSchema);
 export const TermsConditions = model(
@@ -91,3 +110,4 @@ export const TermsConditions = model(
 );
 export const ContactUs = model('ContactUs', contactUsSchema);
 export const FAQ = model('FAQ', faqSchema);
+export const Slider = model('Slider', sliderSchema);

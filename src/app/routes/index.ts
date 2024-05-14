@@ -6,6 +6,8 @@ import { MessageRoutes } from '../modules/messages/message.routes';
 import { SubscriptionRoutes } from '../modules/subscriptions/subscriptions.routes';
 import { AuthRoutes } from '../modules/auth/auth.routes';
 import { NotificationRoutes } from '../modules/notifications/notifications.routes';
+import { TrainingRoutes } from '../modules/training-programs/training-programs.routes';
+import { ScheduleRoutes } from '../modules/schedule/schedule.routes';
 
 const router = express.Router();
 
@@ -37,6 +39,14 @@ const moduleRoutes = [
   {
     path: '/notification',
     route: NotificationRoutes,
+  },
+  {
+    path: '/training',
+    route: TrainingRoutes,
+  },
+  {
+    path: '/schedule',
+    route: ScheduleRoutes,
   },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));
