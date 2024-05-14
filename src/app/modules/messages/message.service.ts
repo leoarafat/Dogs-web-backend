@@ -13,7 +13,7 @@ const sendMessage = async (req: Request) => {
     const { id: receiverId } = req.params;
     const senderId = req.user?.userId;
     const { files } = req;
-    const data = JSON.parse(req.body.data);
+    const data = req.body;
     //@ts-ignore
     // const images = files?.image[0];
 
@@ -88,8 +88,40 @@ const getMessages = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+//!
+const conversationUser = async (req: Request) => {
+  const { id } = req.params;
+
+  // Check if the user exists
+  const isUserExist = await User.findById(id);
+  if (!isUserExist) {
+    throw new ApiError(404, 'User does not exist');
+  }
+
+  // Find conversations that include the user
+  const result = await Conversation.find({
+    participants: { $all: [id] },
+  });
+
+  // Filter out the current user from participants in each conversation
+  const participantIds = result
+    .map(conversation =>
+      conversation.participants.filter(user => user.toString() !== id),
+    )
+    .flat();
+
+  // Remove duplicate participant IDs
+  const uniqueParticipantIds = [
+    ...new Set(participantIds.map(id => id.toString())),
+  ];
+
+  // Fetch user details for the remaining participant IDs
+  const users = await User.find({ _id: { $in: uniqueParticipantIds } });
+  return users;
+};
 
 export const messageService = {
   sendMessage,
   getMessages,
+  conversationUser,
 };

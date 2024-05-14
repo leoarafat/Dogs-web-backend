@@ -1,106 +1,30 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import ApiError from '../../../errors/ApiError';
-import { IPromo, IPromoItem } from './promo.interface';
+import { PromoPackage } from '../promo-package/promo-package.model';
+import User from '../user/user.model';
+import { IPromo } from './promo.inrerface';
 import { Promo } from './promo.model';
 
-//! Admin Management Start
-const addPromo = async (payload: IPromo) => {
-  const checkIsExist = await Promo.findOne({ title: payload.title });
-  if (checkIsExist) {
-    throw new ApiError(404, 'Promo already exist');
+const insertIntoDB = async (payload: IPromo) => {
+  const { user, promo, promo_code } = payload;
+  const isExistUser = await User.findById(user);
+  if (!isExistUser) {
+    throw new ApiError(404, 'User does not exist');
   }
-  const result = await Promo.create(payload);
-  return result;
-};
-
-const addPromoByTitle = async (payload: IPromoItem) => {
-  const promo = await Promo.findOne({
-    _id: payload.promo_id,
+  const checkAlreadyUnlock = await Promo.findOne({ user });
+  const isExistPackage = await PromoPackage.findOne({
+    _id: promo,
+    status: true,
   });
-  if (!promo) {
-    throw new ApiError(404, 'Promos Not Found');
+  if (!isExistPackage) {
+    throw new ApiError(404, 'Package not found');
   }
-
-  //@ts-ignore
-  promo.items.push({ title: payload.title });
-  await promo.save();
-  return promo;
-};
-
-const getPromos = async () => {
-  //   console.log(id);
-  const result = await Promo.find({});
-  return result;
-};
-
-const updatePromosTitle = async (id: string, payload: any) => {
-  try {
-    const subs = await Promo.findOne({ _id: id });
-
-    if (!subs) {
-      throw new ApiError(404, 'Item not found');
-    }
-
-    const result = await Promo.findOneAndUpdate(
-      { _id: id },
-      { ...payload },
-      { new: true, runValidators: true },
-    );
-    return result;
-  } catch (error) {
-    console.error(error);
-    //@ts-ignore
-    throw new Error(error?.message);
+  if (checkAlreadyUnlock && checkAlreadyUnlock.user == user) {
+    throw new ApiError(500, 'You are already unlock this package');
   }
-};
-const updatePromosItem = async (id: string, payload: any) => {
-  try {
-    const subs = await Promo.findOne({ 'items._id': id });
-
-    if (!subs) {
-      throw new ApiError(404, 'Item not found');
-    }
-
-    const result = await Promo.findOneAndUpdate(
-      { 'items._id': id },
-      { $set: { 'items.$.title': payload.title } },
-      { new: true },
-    );
-    return result;
-  } catch (error) {
-    console.error(error);
-    //@ts-ignore
-    throw new Error(error?.message);
+  if (promo_code !== isExistPackage.promo_code) {
+    throw new ApiError(500, 'Invalid promo code');
   }
+  return await Promo.create(payload);
 };
 
-const deletePromosTitle = async (id: string) => {
-  try {
-    const subs = await Promo.findOne({ 'promo_id._id': id });
-
-    if (!subs) {
-      throw new ApiError(404, 'Item not found');
-    }
-
-    await Promo.updateOne({ _id: subs._id }, { $pull: { items: { _id: id } } });
-  } catch (error) {
-    console.error(error);
-  }
-};
-const deletePromos = async (id: string) => {
-  const check = await Promo.findById(id);
-  if (!check) {
-    throw new ApiError(404, 'Promo not found');
-  }
-  return await Promo.findByIdAndDelete(id);
-};
-
-export const PromosPlanService = {
-  addPromo,
-  addPromoByTitle,
-  deletePromosTitle,
-  getPromos,
-  deletePromos,
-  updatePromosTitle,
-  updatePromosItem,
-};
+export const PromoService = { insertIntoDB };

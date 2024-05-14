@@ -9,8 +9,9 @@ import { NotificationRoutes } from '../modules/notifications/notifications.route
 import { TrainingRoutes } from '../modules/training-programs/training-programs.routes';
 import { ScheduleRoutes } from '../modules/schedule/schedule.routes';
 import { DashboardOverviewRoutes } from '../modules/dashboard/overview/overview.routes';
-import { PromoRoutes } from '../modules/promo/promo.routes';
 import { ProgramArticleRoutes } from '../modules/program-article/program-article.routes';
+import { PromoPackageRoutes } from '../modules/promo-package/promo-package.routes';
+import { PromoRoutes } from '../modules/promo/promo.routes';
 
 const router = express.Router();
 
@@ -30,6 +31,10 @@ const moduleRoutes = [
   {
     path: '/subscriptions',
     route: SubscriptionRoutes,
+  },
+  {
+    path: '/promo-package',
+    route: PromoPackageRoutes,
   },
   {
     path: '/promo',

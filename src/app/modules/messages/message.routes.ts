@@ -12,7 +12,11 @@ router.post(
   uploadFile(),
   messageController.sendMessage,
 );
-
+router.get(
+  '/get-conversation/:id',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  messageController.conversationUser,
+);
 router.get(
   '/get-message/:id',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),

@@ -26,8 +26,21 @@ const getMessages: RequestHandler = catchAsync(
     });
   },
 );
+const conversationUser: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await messageService.conversationUser(req);
+
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Conversation Retrieved Successful',
+      data: result,
+    });
+  },
+);
 
 export const messageController = {
   sendMessage,
   getMessages,
+  conversationUser,
 };
